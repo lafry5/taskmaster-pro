@@ -1,4 +1,5 @@
-var tasks = {};
+var tasks = [];
+
 
 var createTask = function(taskText, taskDate, taskList) {
   // create elements that make up a task item
@@ -32,7 +33,7 @@ var loadTasks = function() {
   }
 
   // loop over object properties
-  $.each(tasks, function(list, arr) {
+  $.each(tasks, function(list, arr) {  //creates a for loop through each item in array & creates a task variable for each to tie to a screen
     console.log(list, arr);
     // then loop over sub-array
     arr.forEach(function(task) {
@@ -41,19 +42,19 @@ var loadTasks = function() {
   });
 };
 
-var saveTasks = function() {
+var saveTasks = function() { //stores to local storage (setItem, getItem)
   console.log('executed save tasks')
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
-$(".list-group").on("click", "p", function() {
+$(".list-group").on("click", "p", function() { // when clicked, creates a jQuery item that has white space trimmed 
   var text = $(this)
     .text()
     .trim();
-  var textInput = $("<textarea>")
-  .addClass("form-control")
+  var textInput = $("<textarea>") // taking text from one area
+  .addClass("form-control") //gives it bootstrap form control styling
   .val(text);
-  $(this).replaceWith(textInput);
+  $(this).replaceWith(textInput); // and dropping it on another area
   textInput.trigger("focus");
 });
 
@@ -64,27 +65,31 @@ $(".list-group").on("blur", "textarea", function() {
     var text = $(this)
       .val()
       .trim();
+    console.log('Text'+text);
 
     // get the parent ul's id attribute
     var status = $(this)
       .closest(".list-group")
       .attr("id")
-      .replace("list-", "");
+      .replace("list-", ""); 
+      console.log('Status'+status);
 
     // get the task's position in the list of other li elements
     var index = $(this)
       .closest(".list-group-item")
       .index();
+    console.log('Index'+index);
 
-    // recreate p element
+    // recreate p element     // What does this do?
     var taskP = $("<p>")
     .addClass("m-1")
     .text(text);
+    console.log('TaskP'+taskP);  // This displays TaskP[object Object]
 
     // replace textarea with p element
-    $(this).replaceWith(taskP);
+    $(this).replaceWith(taskP);  //what does this do?
 
-     tasks[status][index].text = text;
+     tasks[status][index].text = text; //problem area; text is undefined
       saveTasks();
 });
 
@@ -93,8 +98,8 @@ $(".list-group").on("blur", "textarea", function() {
 $(".list-group").on("click", "span", function() {
   // get current text
   var date = $(this)
-    .text()
-    .trim();
+    .text() // chained function
+    .trim(); // semi-colon is the period at the end
 
   // create new input element
   var dateInput = $("<input>")
@@ -128,7 +133,7 @@ $(".list-group").on("blur", "input[type='text']", function() {
     .index();
 
   // update task in array and re-save to localstorage
-  tasks[status][index].date = date;
+  tasks[status][index].date = date; //problem area; date is undefined
   saveTasks();
 
   // recreate span element with bootstrap classes
@@ -161,11 +166,11 @@ $(".card .list-group").sortable({
   //update: function(event) {
   //  console.log("update", this);
   update: function(event) {
-  //console.log($(this).children());
-  // loop over current set of children in sortable list
+  //array to store the task data in
+  var tempArr = [];
   
+  // loop over current set of children in sortable list
   $(this).children().each(function() { //original line of code
-  //  console.log($(this)); //original line of code
       var text = $(this)
         .find("p")
         .text()
@@ -176,11 +181,17 @@ $(".card .list-group").sortable({
         .text()
         .trim();
 
-      console.log(text, date);
+  //add task data to the temp array as an object
+  tempArr.push({  
+    text: text,
+    date: date
+ 
+  }); // tempArr
+}); //each function
+ } // keep?
+}); // update function
 
-}); //original line of code
-}
-}); // this was the original line of code
+// console.log(tempArr);
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
