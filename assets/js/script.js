@@ -140,6 +140,9 @@ $(".list-group").on("blur", "input[type='text']", function() {
   $(this).replaceWith(taskSpan);
 });
 
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group")
+}); // drag and drop
 
 
 // modal was triggered
