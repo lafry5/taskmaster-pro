@@ -141,6 +141,29 @@ $(".list-group").on("blur", "input[type='text']", function() {
 });
 
 
+$(".card .list-group").sortable({
+  connectWith: $(".card .list-group"), //this was the original line of code minus the comma
+  scroll: false,
+  tolerance: "pointer",
+  helper: "clone",
+  activate: function(event) {
+    console.log("activate", this);
+  },
+  deactivate: function(event) {
+    console.log("deactivate", this);
+  },
+  over: function(event) {
+    console.log("over", event.target);
+  },
+  out: function(event) {
+    console.log("out", event.target);
+  },
+  update: function(event) {
+    console.log("update", this);
+  }
+}); // this was the original line of code
+
+
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
