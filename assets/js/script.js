@@ -158,12 +158,29 @@ $(".card .list-group").sortable({
   out: function(event) {
     console.log("out", event.target);
   },
+  //update: function(event) {
+  //  console.log("update", this);
   update: function(event) {
-    console.log("update", this);
-  }
+  //console.log($(this).children());
+  // loop over current set of children in sortable list
+  
+  $(this).children().each(function() { //original line of code
+  //  console.log($(this)); //original line of code
+      var text = $(this)
+        .find("p")
+        .text()
+        .trim();
+
+      var date = $(this)
+        .find("span")
+        .text()
+        .trim();
+
+      console.log(text, date);
+
+}); //original line of code
+}
 }); // this was the original line of code
-
-
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -210,5 +227,3 @@ $("#remove-tasks").on("click", function() {
 
 // load tasks for the first time
 loadTasks();
-
-
